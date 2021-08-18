@@ -1,0 +1,34 @@
+[
+    {
+      "name": "baked salmon",
+      "ingredients": [
+            { "name": "salmon2", "amount": 1, "measurement": "l lb"
+            },
+            { "name": "pine nuts", "amount": 1, "measurement": "cup"
+            },
+            { "name": "butter lettuce", "amount": 2, "measurement": "cups"
+            }
+        ],
+      "steps": [
+        "preheat",
+        "spread",
+        "add"
+        ]
+    },
+    {
+      "name": "fish tacos",
+      "ingredients": [
+            { "name": "whitefish", "amount": 1, "measurement": "l lb"
+            },
+            { "name": "cheese", "amount": 1, "measurement": "cup"
+            },
+            { "name": "iceberg", "amount": 2, "measurement": "cups"
+            }
+        ],
+      "steps": [
+        "preheat2",
+        "spread2",
+        "add2"
+        ]
+    }
+]
