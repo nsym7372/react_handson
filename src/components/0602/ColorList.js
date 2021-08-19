@@ -3,7 +3,7 @@ import Color from './Color';
 
 export default function ColorList({colors = [], onRemoveColor = f => f, onRateColor = f => f}){
     if(!colors.length){
-        return <div>のColors Listed.</div>
+        return <div>No Colors Listed.</div>
     }
 
     return(
