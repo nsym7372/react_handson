@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ColorList from './components/0602/ColorList';
-import colorData from './data/color-data.json';
+import ColorList from './ColorList';
+import colorData from '../../data/color-data.json';
 
 
 export default function App() {
