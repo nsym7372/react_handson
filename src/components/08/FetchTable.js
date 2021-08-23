@@ -3,7 +3,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 export default function FetchTable() {
-    const [users, setUsers] = useState([]);
+    // const [users, setUsers] = useState([]);
 
     // const f = async () => {
     //     await fetch(`http://localhost:8080/api/public/api/users`)
