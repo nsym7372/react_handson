@@ -22,7 +22,7 @@ export default function FetchTable() {
     //     setUsers(data);
     // }
 
-    const {data, status} = useQuery('users', async () => {
+    const {data, status} = useQuery('getUsers', async () => {
         const { data } = await axios.get("http://localhost:8080/api/public/api/users")
         return data;
     });

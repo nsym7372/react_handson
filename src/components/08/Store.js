@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 
 export default function Store() {
+    const queryClient = useQueryClient();
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -10,6 +12,12 @@ export default function Store() {
     const createUser = async() => {
         await axios.post('http://localhost:8080/api/public/api/users', {name, email, password});
     }
+
+    const mutation = useMutation(createUser, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('getUsers');
+        }
+    })
 
     const submit = e => {
         e.preventDefault();
@@ -25,7 +33,7 @@ export default function Store() {
         //     })
         // })
 
-        createUser();
+        mutation.mutate();
         
 
         setName("");
