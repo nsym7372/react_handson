@@ -3,6 +3,8 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import allLocales from '@fullcalendar/core/locales-all';
 import interactionPlugin from "@fullcalendar/interaction";
+import { useQuery } from "react-query";
+import axios from "axios";
 // import timeGridPlugin from "@fullcalendar/timegrid";
 
 
@@ -60,6 +62,11 @@ export default function App() {
             date: "2021-08-24"
         }
     ]
+
+    const {storedEvent, status} = useQuery('getEvent', async() => {
+        const {data} = await axios.get('http://');
+        return data;
+    })
 
     const handleDateClick = useCallback((arg) => {
         // alert(arg.dateStr);
