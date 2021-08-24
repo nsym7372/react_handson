@@ -23,7 +23,7 @@ class TrainEventFactory extends Factory
     {
         return [
             'title' => $this->faker->name(),
-            'date' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '+1 week'),
+            'date' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '+5 year'),
             //
         ];
     }

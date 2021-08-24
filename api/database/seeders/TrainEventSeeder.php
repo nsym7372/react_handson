@@ -15,6 +15,6 @@ class TrainEventSeeder extends Seeder
     public function run()
     {
         //
-        TrainEvent::factory(10)->create();
+        TrainEvent::factory(1000)->create();
     }
 }
