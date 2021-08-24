@@ -16,6 +16,7 @@
     "axios": "^0.21.1",
     "postcss": "^7.0.36",
     "react": "^17.0.2",
+    "react-datepicker": "^4.2.1",
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
     "react-modal": "^3.14.3",
