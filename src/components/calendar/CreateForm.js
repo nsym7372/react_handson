@@ -25,7 +25,7 @@ export default function CreateForm({modalIsOpen, setIsOpen}) {
 
     return (
         <div>
-            <Modal isOpen={modalIsOpen} style={modalStyle}>
+            <Modal isOpen={modalIsOpen} style={modalStyle} onRequestClose={() => setIsOpen(false)}>
                 <button onClick={() => setIsOpen(false)}>Close Modal</button>
             </Modal>
 
