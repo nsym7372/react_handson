@@ -4,19 +4,48 @@ import allLocales from '@fullcalendar/core/locales-all';
 import interactionPlugin from "@fullcalendar/interaction";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { useState, useCallback } from "react";
+import CreateForm from "./CreateForm";
 
 export default function SampleCalendar() {
+    const [modalIsOpen, setIsOpen] = useState(false);
+
+    const handleEvents = useCallback((events) => {
+        console.log("eventsSet:", events);  // 確認用
+        // setCurrentEvents(events);
+    }, []);
+
+    // 日付選択：複数日でもOK
+    const handleDateSelect = useCallback((selectInfo) => {
+        console.log('select:', selectInfo);
+    }, []);
+
+    // 日付クリック：当日のみ
+    const handleDateClick = useCallback((arg) => {
+        setIsOpen(true);
+        console.log('dateClick:', arg);
+    }, []);
+
+    // 登録済みイベントクリック
+    const handleEventClick = useCallback((arg) => {
+        console.log('eventClick:', arg);
+    }, []);
+
 
     const { data, status } = useQuery('getEvent', async () => {
         const ret = await axios.get('http://localhost:8080/api/public/api/events');
         return ret.data;
     })
 
-    if(status === 'loading'){ return 'loading'}
-    else if(status === 'error'){return 'error'};
+    if (status === 'loading') { return 'loading' }
+    else if (status === 'error') { return 'error' };
+
+
 
     return (
         <>
+            <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
+
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
@@ -25,6 +54,12 @@ export default function SampleCalendar() {
                 initialEvents={data}
 
                 eventDisplay="block"
+
+                selectable={true}   //クリック許可
+                eventsSet={handleEvents}    //予定初期化、変更時（全ての予定が対象）
+                dateClick={handleDateClick} //日付クリック：当日のみ
+                select={handleDateSelect}   //日付選択：複数日でもOK
+                eventClick={handleEventClick}   // 登録済みイベントクリック
 
 
             // defaultView="timeGridWeek" // 基本UI
