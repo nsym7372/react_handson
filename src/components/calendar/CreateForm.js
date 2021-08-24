@@ -1,32 +1,36 @@
 import Modal from "react-modal";
 
 Modal.setAppElement("#root");
-export default function CreateForm({modalIsOpen, setIsOpen}) {
+export default function CreateForm({ modalIsOpen, setIsOpen }) {
 
     const modalStyle = {
         overlay: {
-          position: "fixed",
-          top:0,
-          left:0,
-          zIndex:100,
-          backgroundColor: "rgba(0,0,0,0.5)"
+            position: "fixed",
+            top: 0,
+            left: 0,
+            zIndex: 100,
+            backgroundColor: "rgba(0,0,0,0.5)"
         },
         content: {
-          position: "absolute",
-          top: "5rem",
-          left: "5rem",
-          right: "5rem",
-          bottom: "5rem",
-          backgroundColor: "paleturquoise",
-          borderRadius: "1rem",
-          padding: "1.5rem"
+            position: "absolute",
+            top: "5rem",
+            left: "5rem",
+            right: "5rem",
+            bottom: "5rem",
+            backgroundColor: "paleturquoise",
+            borderRadius: "1rem",
+            padding: "1.5rem"
         }
-      };
+    };
 
     return (
         <div>
             <Modal isOpen={modalIsOpen} style={modalStyle} onRequestClose={() => setIsOpen(false)}>
-                <button onClick={() => setIsOpen(false)}>Close Modal</button>
+                <div>
+                    <h2 className="text-5xl">title</h2>
+                    <button className="font-bold py-2 px-4 rounded bg-blue-500 text-white" onClick={() => setIsOpen(false)}>Close Modal</button>
+                </div>
+
             </Modal>
 
             {/* <button onClick={() => setIsOpen(true)}>Open Modal</button>
