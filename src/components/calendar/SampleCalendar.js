@@ -47,10 +47,10 @@ export default function SampleCalendar() {
 
 
     return (
-        <div>
-            <TestButton />
-            <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} theDay={today} />
 
+        <div>
+            {/* <TestButton /> */}
+            <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} theDay={today} />
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
@@ -65,8 +65,8 @@ export default function SampleCalendar() {
                 eventClick={handleEventClick}   // 登録済みイベントクリック
                 events={events}
 
-                // contentHeight="auto"
-                // height="100"
+            // contentHeight="auto"
+            // height="100"
 
 
             // defaultView="timeGridWeek" // 基本UI
@@ -100,6 +100,8 @@ export default function SampleCalendar() {
             // eventDisplay='block'
             // start={[new Date()]}
             />
+
         </div>
+
     );
 }
