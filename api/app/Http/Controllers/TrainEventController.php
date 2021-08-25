@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TrainEvent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TrainEventController extends Controller
@@ -36,7 +37,13 @@ class TrainEventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $newEvent = new TrainEvent();
+        $newEvent->title = $request->title;
+        $newEvent->date = "{$request->day} {$request->time}:{$request->minute}";
+
+        $event = $newEvent->save();
+        return $event ? response()->json($event, 201) : response()->json([], 500);
     }
 
     /**

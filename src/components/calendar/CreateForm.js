@@ -1,7 +1,25 @@
+import axios from "axios";
+import { useState } from "react";
 import Modal from "react-modal";
+import {useMutation, useQueryClient} from "react-query";
 
 Modal.setAppElement("#root");
 export default function CreateForm({ modalIsOpen, setIsOpen }) {
+    const queryClient = useQueryClient();
+    const [title, setTitle] = useState('title');
+    const [day, setDay] = useState('2021-08-25');
+    const [time, setTime] = useState('08');
+    const [minute, setMinute] = useState('00');
+
+    const createEvent = async () => {
+        await axios.post('http://localhost:8080/api/public/api/events', { title, day, time, minute});
+    }
+
+    const mutation = useMutation(createEvent, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('getEvent');
+        }
+    })
 
     const modalStyle = {
         overlay: {
@@ -25,39 +43,31 @@ export default function CreateForm({ modalIsOpen, setIsOpen }) {
         }
     };
 
+    const submit = e => {
+        e.preventDefault();
+        mutation.mutate();
+
+        setIsOpen(false)
+    }
+
     return (
-        <div>
+        <div className="h-full">
             <Modal isOpen={modalIsOpen} style={modalStyle} onRequestClose={() => setIsOpen(false)}>
                 <div className="text-center">
-                    <h2 className="text-3xl">イベント登録</h2>
-                    <TitleInput />
-                    <DateInput />
+                    <form onSubmit={submit}>
+                        <h2 className="text-3xl">イベント登録</h2>
+                        <TitleInput />
+                        <DateInput />
 
-                    {/* <button className="font-bold py-2 px-4 rounded bg-blue-500 text-white mt-4" onClick={() => setIsOpen(false)}>Close Modal</button> */}
-
-                    <button className="btn btn-blue mt-4 mr-4" onClick={() => setIsOpen(false)}>Create</button>
-                    <button className="btn btn-cancel mt-4" onClick={() => setIsOpen(false)}>Close</button>
-
+                        <button className="btn btn-blue mt-4 mr-4">Create</button>
+                        <button className="btn btn-cancel mt-4" onClick={() => setIsOpen(false)}>Close</button>
+                    </form>
                 </div>
 
             </Modal>
 
         </div>
 
-        // 外枠
-        // <div>
-        //     <x-label for="email" :value="__('Email')" />
-
-        //     <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-        // </div>
-
-        //input
-        // <input {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge(['class' => 'rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50']) !!}></input>
-
-        //label
-        // <label {{ $attributes->merge(['class' => 'block font-medium text-sm text-gray-700']) }}>
-        //     {{ $value ?? $slot }}
-        // </label>
     );
 
 }

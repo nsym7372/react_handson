@@ -6,9 +6,11 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { useState, useCallback } from "react";
 import CreateForm from "./CreateForm";
+import TestButton from "./TestButton";
 
 export default function SampleCalendar() {
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [events, setEvents] = useState([]);
 
     const handleEvents = useCallback((events) => {
         console.log("eventsSet:", events);  // 確認用
@@ -34,6 +36,7 @@ export default function SampleCalendar() {
 
     const { data, status } = useQuery('getEvent', async () => {
         const ret = await axios.get('http://localhost:8080/api/public/api/events');
+        setEvents(ret.data);
         return ret.data;
     })
 
@@ -43,7 +46,8 @@ export default function SampleCalendar() {
 
 
     return (
-        <>
+        <div>
+            <TestButton />
             <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
 
             <FullCalendar
@@ -51,8 +55,6 @@ export default function SampleCalendar() {
                 initialView="dayGridMonth"
                 locales={allLocales}
                 locale="ja" // 日本語
-                initialEvents={data}
-
                 eventDisplay="block"
 
                 selectable={true}   //クリック許可
@@ -60,6 +62,10 @@ export default function SampleCalendar() {
                 dateClick={handleDateClick} //日付クリック：当日のみ
                 select={handleDateSelect}   //日付選択：複数日でもOK
                 eventClick={handleEventClick}   // 登録済みイベントクリック
+                events={events}
+                
+                // contentHeight="auto"
+                // height="100"
 
 
             // defaultView="timeGridWeek" // 基本UI
@@ -93,6 +99,6 @@ export default function SampleCalendar() {
             // eventDisplay='block'
             // start={[new Date()]}
             />
-        </>
+        </div>
     );
 }
