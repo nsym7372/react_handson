@@ -12,6 +12,8 @@ export default function SampleCalendar() {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [today, setToday] = useState('');
     const [events, setEvents] = useState([]);
+    const [id, setId] = useState('');
+    const [event, setEvent] = useState();
 
     const handleEvents = useCallback((events) => {
         // console.log("eventsSet:", events);  // 確認用
@@ -33,6 +35,9 @@ export default function SampleCalendar() {
     // 登録済みイベントクリック
     const handleEventClick = useCallback((arg) => {
         // console.log('eventClick:', arg);
+
+        setId(arg.event.id);
+        setIsOpen(true);
     }, []);
 
 
@@ -50,7 +55,7 @@ export default function SampleCalendar() {
 
         <div>
             {/* <TestButton /> */}
-            <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} theDay={today} />
+            <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} theDay={today} id={id} events={events}/>
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
