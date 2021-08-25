@@ -10,34 +10,35 @@ import TestButton from "./TestButton";
 
 export default function SampleCalendar() {
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [today, setToday] = useState('');
     const [events, setEvents] = useState([]);
 
     const handleEvents = useCallback((events) => {
-        console.log("eventsSet:", events);  // 確認用
+        // console.log("eventsSet:", events);  // 確認用
         // setCurrentEvents(events);
     }, []);
 
     // 日付選択：複数日でもOK
     const handleDateSelect = useCallback((selectInfo) => {
-        console.log('select:', selectInfo);
+        // console.log('select:', selectInfo);
     }, []);
 
     // 日付クリック：当日のみ
     const handleDateClick = useCallback((arg) => {
+        setToday(arg.dateStr);
         setIsOpen(true);
-        console.log('dateClick:', arg);
+        // console.log('dateClick:', arg.dateStr);
     }, []);
 
     // 登録済みイベントクリック
     const handleEventClick = useCallback((arg) => {
-        console.log('eventClick:', arg);
+        // console.log('eventClick:', arg);
     }, []);
 
 
-    const { data, status } = useQuery('getEvent', async () => {
+    const { status } = useQuery('getEvent', async () => {
         const ret = await axios.get('http://localhost:8080/api/public/api/events');
         setEvents(ret.data);
-        return ret.data;
     })
 
     if (status === 'loading') { return 'loading' }
@@ -48,7 +49,7 @@ export default function SampleCalendar() {
     return (
         <div>
             <TestButton />
-            <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />
+            <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} theDay={today} />
 
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
@@ -63,7 +64,7 @@ export default function SampleCalendar() {
                 select={handleDateSelect}   //日付選択：複数日でもOK
                 eventClick={handleEventClick}   // 登録済みイベントクリック
                 events={events}
-                
+
                 // contentHeight="auto"
                 // height="100"
 
