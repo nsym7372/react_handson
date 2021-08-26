@@ -2,16 +2,13 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import allLocales from '@fullcalendar/core/locales-all';
 import interactionPlugin from "@fullcalendar/interaction";
-import { useQuery } from "react-query";
-import axios from "axios";
-import { useState, useCallback, useContext } from "react";
+import { useCallback, useContext } from "react";
 import CreateForm from "./CreateForm";
 import { EventContext } from "./EventProvider";
 // import TestButton from "./TestButton";
 
 export default function SampleCalendar() {
-    const [events, setEvents] = useState([]);
-    const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes } = useContext(EventContext);
+    const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, events } = useContext(EventContext);
 
     const handleEvents = useCallback((ev) => {
         console.log("eventsSet:", ev);  // 確認用
@@ -52,17 +49,6 @@ export default function SampleCalendar() {
         setId(arg.event.id);
         setModalOpen(true);
     }, [events, setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes]);
-
-
-    const { status } = useQuery('getEvent', async () => {
-        const ret = await axios.get('http://localhost:8080/api/public/api/events');
-        setEvents(ret.data);
-    })
-
-    if (status === 'loading') { return 'loading' }
-    else if (status === 'error') { return 'error' };
-
-
 
     return (
 

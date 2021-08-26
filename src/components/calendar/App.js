@@ -7,11 +7,11 @@ export default function App() {
 
     return (
         <>
-            <EventProvider>
-                <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={queryClient}>
+                <EventProvider>
                     <SampleCalendar />
-                </QueryClientProvider>
-            </EventProvider>
+                </EventProvider>
+            </QueryClientProvider>
         </>
     )
 }
