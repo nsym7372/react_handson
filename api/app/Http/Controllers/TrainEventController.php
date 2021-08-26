@@ -40,7 +40,7 @@ class TrainEventController extends Controller
 
         $newEvent = new TrainEvent();
         $newEvent->title = $request->title;
-        $newEvent->date = "{$request->theDay} {$request->time}:{$request->minute}";
+        $newEvent->date = "{$request->targetDay} {$request->hours}:{$request->minutes}";
 
         $event = $newEvent->save();
         return $event ? response()->json($event, 201) : response()->json([], 500);

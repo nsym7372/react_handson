@@ -10,14 +10,11 @@ import { EventContext } from "./EventProvider";
 // import TestButton from "./TestButton";
 
 export default function SampleCalendar() {
-    const [modalIsOpen, setIsOpen] = useState(false);
-    const [today, setToday] = useState('');
     const [events, setEvents] = useState([]);
-    const [id, setId] = useState('');
-    const {title, setTitle} = useContext(EventContext);
+    const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes } = useContext(EventContext);
 
-    const handleEvents = useCallback((events) => {
-        // console.log("eventsSet:", events);  // 確認用
+    const handleEvents = useCallback((ev) => {
+        console.log("eventsSet:", ev);  // 確認用
         // setCurrentEvents(events);
     }, []);
 
@@ -28,12 +25,14 @@ export default function SampleCalendar() {
 
     // 日付クリック：当日のみ
     const handleDateClick = useCallback((arg) => {
-        setToday(arg.dateStr);
+        setTargetDay(arg.dateStr);
+        setHours('08');
+        setMinutes('00');
         setId('');
         setTitle('');
-        setIsOpen(true);
+        setModalOpen(true);
         // console.log('dateClick:', arg.dateStr);
-    }, [setTitle]);
+    }, [setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes]);
 
     // 登録済みイベントクリック
     const handleEventClick = useCallback((arg) => {
@@ -41,13 +40,18 @@ export default function SampleCalendar() {
 
         const ev = events.find((e) => {
             return e.id === Number(arg.event.id);
-    
+
         })
         setTitle(ev ? ev.title : '');
-        
+
+        const date = new Date(ev.date)
+        const dateStr = [date.getFullYear(), date.getMonth() + 1, date.getDate()].join('-');
+        setTargetDay(dateStr);
+        setHours(('0' + date.getHours()).slice(-2));
+        setMinutes(('0' + date.getMinutes()).slice(-2));
         setId(arg.event.id);
-        setIsOpen(true);
-    }, [events, setTitle]);
+        setModalOpen(true);
+    }, [events, setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes]);
 
 
     const { status } = useQuery('getEvent', async () => {
@@ -64,7 +68,7 @@ export default function SampleCalendar() {
 
         <div>
             {/* <TestButton /> */}
-            <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} theDay={today} id={id} setId={setId} events={events} title={title} setTitle={setTitle} />
+            <CreateForm />
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
