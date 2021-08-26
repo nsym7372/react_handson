@@ -4,8 +4,9 @@ import allLocales from '@fullcalendar/core/locales-all';
 import interactionPlugin from "@fullcalendar/interaction";
 import { useQuery } from "react-query";
 import axios from "axios";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useContext } from "react";
 import CreateForm from "./CreateForm";
+import { EventContext } from "./EventProvider";
 // import TestButton from "./TestButton";
 
 export default function SampleCalendar() {
@@ -13,7 +14,7 @@ export default function SampleCalendar() {
     const [today, setToday] = useState('');
     const [events, setEvents] = useState([]);
     const [id, setId] = useState('');
-    const [title, setTitle] = useState('');
+    const {title, setTitle} = useContext(EventContext);
 
     const handleEvents = useCallback((events) => {
         // console.log("eventsSet:", events);  // 確認用
@@ -32,7 +33,7 @@ export default function SampleCalendar() {
         setTitle('');
         setIsOpen(true);
         // console.log('dateClick:', arg.dateStr);
-    }, []);
+    }, [setTitle]);
 
     // 登録済みイベントクリック
     const handleEventClick = useCallback((arg) => {
@@ -46,7 +47,7 @@ export default function SampleCalendar() {
         
         setId(arg.event.id);
         setIsOpen(true);
-    }, [events]);
+    }, [events, setTitle]);
 
 
     const { status } = useQuery('getEvent', async () => {

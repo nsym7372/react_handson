@@ -1,15 +1,17 @@
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useContext } from "react";
 import Modal from "react-modal";
 import { useMutation, useQueryClient } from "react-query";
+import { EventContext } from "./EventProvider";
 
 Modal.setAppElement("#root");
-export default function CreateForm({ modalIsOpen, setIsOpen, theDay, events, id, setId, title, setTitle }) {
+export default function CreateForm({ modalIsOpen, setIsOpen, theDay, events, id, setId }) {
 
     console.log('modal open');
     const [time, setTime] = useState('08');
     const [minute, setMinute] = useState('15');
     const [event, setEvent] = useState(events);
+    const {title, setTitle} = useContext(EventContext);
 
     const queryClient = useQueryClient();
 
