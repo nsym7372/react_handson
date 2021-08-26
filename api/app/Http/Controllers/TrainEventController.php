@@ -20,16 +20,6 @@ class TrainEventController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -46,27 +36,16 @@ class TrainEventController extends Controller
         return $event ? response()->json($event, 201) : response()->json([], 500);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TrainEvent  $trainEvent
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TrainEvent $trainEvent)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TrainEvent  $trainEvent
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TrainEvent $trainEvent)
-    {
-        //
-    }
+    // /**
+    //  * Display the specified resource.
+    //  *
+    //  * @param  \App\Models\TrainEvent  $trainEvent
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function show(TrainEvent $trainEvent)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -75,9 +54,14 @@ class TrainEventController extends Controller
      * @param  \App\Models\TrainEvent  $trainEvent
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TrainEvent $trainEvent)
+    public function update(Request $request, TrainEvent $event)
     {
         //
+        $event->title = $request->title;
+        $event->date = "{$request->targetDay} {$request->hours}:{$request->minutes}";
+
+        $event = $event->save();
+        return $event ? response()->json($event, 200) : response()->json([], 500);
     }
 
     /**

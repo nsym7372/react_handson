@@ -6,14 +6,24 @@ import { EventContext } from "./EventProvider";
 
 Modal.setAppElement("#root");
 export default function CreateForm() {
-    const {title, modalOpen, setModalOpen, targetDay, hours, minutes} = useContext(EventContext);
+    const {title, modalOpen, setModalOpen, targetDay, hours, minutes, id} = useContext(EventContext);
 
     const createEvent = async () => {
         await axios.post('http://localhost:8080/api/public/api/events', { title, targetDay, hours, minutes });
     }
 
+    const updateEvent = async () => {
+        await axios.put(`http://localhost:8080/api/public/api/events/${id}`, { title, targetDay, hours, minutes })
+    }
+
     const queryClient = useQueryClient();
-    const mutation = useMutation(createEvent, {
+    const storeMutation = useMutation(createEvent, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('getEvent');
+        }
+    })
+
+    const updateMutation = useMutation(updateEvent, {
         onSuccess: () => {
             queryClient.invalidateQueries('getEvent');
         }
@@ -43,21 +53,22 @@ export default function CreateForm() {
 
     const submit = (e) => {
         e.preventDefault();
-        mutation.mutate();
-
+        id ? updateMutation.mutate() : storeMutation.mutate();
         setModalOpen(false);
     };
 
+    const message = id ? 'イベント更新' : 'イベント登録';
+    const buttonText = id ? 'update' : 'create';
     return (
         <div className="h-full">
             <Modal isOpen={modalOpen} style={modalStyle} onRequestClose={() => setModalOpen(false)}>
                 <div className="text-center">
                     <form onSubmit={submit}>
-                        <h2 className="text-3xl">イベント登録</h2>
+                        <h2 className="text-3xl">{message}</h2>
                         <TitleInput />
                         <DateInput />
 
-                        <button className="btn btn-blue mt-4 mr-4">Create</button>
+                        <button className="btn btn-blue mt-4 mr-4">{buttonText}</button>
                         <button className="btn btn-cancel mt-4" onClick={() => setModalOpen(false)}>Close</button>
                     </form>
                 </div>
