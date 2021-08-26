@@ -6,14 +6,14 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { useState, useCallback } from "react";
 import CreateForm from "./CreateForm";
-import TestButton from "./TestButton";
+// import TestButton from "./TestButton";
 
 export default function SampleCalendar() {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [today, setToday] = useState('');
     const [events, setEvents] = useState([]);
     const [id, setId] = useState('');
-    const [event, setEvent] = useState();
+    const [title, setTitle] = useState('');
 
     const handleEvents = useCallback((events) => {
         // console.log("eventsSet:", events);  // 確認用
@@ -28,6 +28,8 @@ export default function SampleCalendar() {
     // 日付クリック：当日のみ
     const handleDateClick = useCallback((arg) => {
         setToday(arg.dateStr);
+        setId('');
+        setTitle('');
         setIsOpen(true);
         // console.log('dateClick:', arg.dateStr);
     }, []);
@@ -36,9 +38,15 @@ export default function SampleCalendar() {
     const handleEventClick = useCallback((arg) => {
         // console.log('eventClick:', arg);
 
+        const ev = events.find((e) => {
+            return e.id === Number(arg.event.id);
+    
+        })
+        setTitle(ev ? ev.title : '');
+        
         setId(arg.event.id);
         setIsOpen(true);
-    }, []);
+    }, [events]);
 
 
     const { status } = useQuery('getEvent', async () => {
@@ -55,7 +63,7 @@ export default function SampleCalendar() {
 
         <div>
             {/* <TestButton /> */}
-            <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} theDay={today} id={id} events={events}/>
+            <CreateForm modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} theDay={today} id={id} setId={setId} events={events} title={title} setTitle={setTitle} />
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"

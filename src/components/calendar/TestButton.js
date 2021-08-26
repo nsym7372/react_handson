@@ -4,10 +4,10 @@ import { useMutation, useQueryClient } from "react-query";
 
 export default function TestButton() {
     const queryClient = useQueryClient();
-    const [title, setTitle] = useState('title');
-    const [day, setDay] = useState('2021-08-25');
-    const [time, setTime] = useState('08');
-    const [minute, setMinute] = useState('00');
+    const [title] = useState('title');
+    const [day] = useState('2021-08-25');
+    const [time] = useState('08');
+    const [minute] = useState('00');
 
     const createEvent = async () => {
         await axios.post('http://localhost:8080/api/public/api/events', { title, day, time, minute });
