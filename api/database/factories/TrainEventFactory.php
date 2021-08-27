@@ -23,7 +23,8 @@ class TrainEventFactory extends Factory
     {
         return [
             'title' => $this->faker->name(),
-            'date' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '+5 year'),
+            'date' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '+1 month'),
+            'area' => $this->faker->randomElement($array = ['国内', '海外']),
             //
         ];
     }

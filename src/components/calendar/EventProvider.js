@@ -13,6 +13,10 @@ export default function EventProvider({ children }) {
     const [minutes, setMinutes] = useState('');
 
     const [events, setEvents] = useState([]);
+    const [area, setArea] = useState('国内');
+    //
+    const [month, setMonth] = useState('08');
+    const [year, setYear] = useState('2021')
 
     const { status } = useQuery('getEvent', async () => {
         const ret = await axios.get('http://localhost:8080/api/public/api/events');
@@ -25,7 +29,8 @@ export default function EventProvider({ children }) {
     return (
         <EventContext.Provider value={{
             title, setTitle, modalOpen, setModalOpen, id, setId, targetDay, setTargetDay,
-            hours, setHours, minutes, setMinutes, events
+            hours, setHours, minutes, setMinutes, events, month, setMonth, year, setYear,
+            area, setArea
         }}>
             {children}
         </EventContext.Provider>

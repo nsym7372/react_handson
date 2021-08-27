@@ -2,13 +2,17 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import allLocales from '@fullcalendar/core/locales-all';
 import interactionPlugin from "@fullcalendar/interaction";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useRef } from "react";
 import CreateForm from "./CreateForm";
 import { EventContext } from "./EventProvider";
 // import TestButton from "./TestButton";
+// import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import MonthPicker from "./MonthPicker";
+
 
 export default function SampleCalendar() {
-    const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, events } = useContext(EventContext);
+    const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, events, setArea, year, month } = useContext(EventContext);
 
     const handleEvents = useCallback((ev) => {
         console.log("eventsSet:", ev);  // 確認用
@@ -27,9 +31,10 @@ export default function SampleCalendar() {
         setMinutes('00');
         setId('');
         setTitle('');
+        setArea('国内');
         setModalOpen(true);
         // console.log('dateClick:', arg.dateStr);
-    }, [setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes]);
+    }, [setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, setArea]);
 
     // 登録済みイベントクリック
     const handleEventClick = useCallback((arg) => {
@@ -41,22 +46,27 @@ export default function SampleCalendar() {
         })
         setTitle(ev ? ev.title : '');
 
+        // window.location.replace(`http://localhost:8080/${arg.event.id}`);
+        // window.open(`http://localhost:8080/${arg.event.id}`);
+
         const date = new Date(ev.date)
         const dateStr = [date.getFullYear(), date.getMonth() + 1, date.getDate()].join('-');
         setTargetDay(dateStr);
         setHours(('0' + date.getHours()).slice(-2));
         setMinutes(('0' + date.getMinutes()).slice(-2));
         setId(arg.event.id);
+        setArea(ev.area);
         setModalOpen(true);
-    }, [events, setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes]);
+    }, [events, setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, setArea]);
 
     return (
 
-        <div>
+        <div className="container mx-auto my-12">
             {/* <TestButton /> */}
+            {/* <MonthPicker /> */}
             <CreateForm />
             <FullCalendar
-                plugins={[dayGridPlugin, interactionPlugin]}
+                plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
                 initialView="dayGridMonth"
                 locales={allLocales}
                 locale="ja" // 日本語
@@ -68,9 +78,30 @@ export default function SampleCalendar() {
                 select={handleDateSelect}   //日付選択：複数日でもOK
                 eventClick={handleEventClick}   // 登録済みイベントクリック
                 events={events}
+                headerToolbar={{
+                    'left': 'prevYear,prev,next,nextYear today',
+                    'center': 'title',
+                    'right': 'dayGridMonth listYear'
+                }}
+                // aspectRatio={1.15}
+                contentHeight="auto"
+                weekends={true}                
 
-            // contentHeight="auto"
-            // height="100"
+                // timeFormat={'H(:mm)'}
+                // // 列の書式
+                // columnFormat={{
+                //     month: 'ddd',    // 月
+                //     week: "d'('ddd')'", // 7(月)
+                //     day: "d'('ddd')'" // 7(月)
+                // }}
+                buttonText={{month: 'カレンダー', list: '一覧'}}
+                dayCellContent={e => e.dayNumberText = e.dayNumberText.replace('日', '')}
+                
+                
+
+                showNonCurrentDates={true}
+                fixedWeekCount={false}
+                // height="100"
 
 
             // defaultView="timeGridWeek" // 基本UI

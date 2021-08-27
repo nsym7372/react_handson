@@ -16,7 +16,10 @@ class CreateTrainEventsTable extends Migration
         Schema::create('train_events', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->timestamp('date');
+            $table->dateTime('date');
+            $table->string('area');
+            $table->date('date2')->nullable();
+            
             $table->timestamps();
         });
     }

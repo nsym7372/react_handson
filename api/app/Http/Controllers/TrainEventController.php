@@ -31,7 +31,7 @@ class TrainEventController extends Controller
         $newEvent = new TrainEvent();
         $newEvent->title = $request->title;
         $newEvent->date = "{$request->targetDay} {$request->hours}:{$request->minutes}";
-
+        $newEvent->area = $request->area;
         $event = $newEvent->save();
         return $event ? response()->json($event, 201) : response()->json([], 500);
     }
@@ -59,7 +59,7 @@ class TrainEventController extends Controller
         //
         $event->title = $request->title;
         $event->date = "{$request->targetDay} {$request->hours}:{$request->minutes}";
-
+        $event->area = $request->area;
         $event = $event->save();
         return $event ? response()->json($event, 200) : response()->json([], 500);
     }
