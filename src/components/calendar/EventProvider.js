@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
 
@@ -13,14 +13,19 @@ export default function EventProvider({ children }) {
     const [minutes, setMinutes] = useState('');
 
     const [events, setEvents] = useState([]);
+    const [filteredEvents, setFilteredEvents] = useState([])
     const [area, setArea] = useState('国内');
     //
-    const [month, setMonth] = useState('08');
-    const [year, setYear] = useState('2021')
+    // const [month, setMonth] = useState('08');
+    // const [year, setYear] = useState('2021')
 
     const { status } = useQuery('getEvent', async () => {
         const ret = await axios.get('http://localhost:8080/api/public/api/events');
         setEvents(ret.data);
+
+        const filtered =  await ret.data.filter((ev, i) => { return ev.area === area });
+        // const filtered =  await events.filter((ev, i) => { return ev.area === area });
+        setFilteredEvents(filtered);
     })
 
     if (status === 'loading') { return 'loading' }
@@ -29,8 +34,8 @@ export default function EventProvider({ children }) {
     return (
         <EventContext.Provider value={{
             title, setTitle, modalOpen, setModalOpen, id, setId, targetDay, setTargetDay,
-            hours, setHours, minutes, setMinutes, events, month, setMonth, year, setYear,
-            area, setArea
+            hours, setHours, minutes, setMinutes, events, 
+            area, setArea, filteredEvents, setFilteredEvents
         }}>
             {children}
         </EventContext.Provider>

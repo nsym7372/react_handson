@@ -67,9 +67,11 @@ export default function CreateForm() {
                         <h2 className="text-3xl">{message}</h2>
                         <TitleInput />
                         <DateInput />
-                        <AreaInput />
-                        <button className="btn btn-blue mt-4 mr-4">{buttonText}</button>
-                        <button className="btn btn-cancel mt-4" onClick={() => setModalOpen(false)}>Close</button>
+                        <AreaDisplay />
+                        <div>
+                            <button className="btn btn-blue mt-4 mr-4">{buttonText}</button>
+                            <button className="btn btn-cancel mt-4" onClick={() => setModalOpen(false)}>Close</button>
+                        </div>
                     </form>
                 </div>
 
@@ -115,16 +117,14 @@ const DateInput = () => {
 
 }
 
-const AreaInput = () => {
-    const { area, setArea } = useContext(EventContext);
+const AreaDisplay = () => {
+    const { area, id } = useContext(EventContext);
+    const contents = <div className="mt-4">
+        <label htmlFor="time-select" className="float-left block font-medium text-base text-gray-700 mr-4" >区分</label>
+        <label htmlFor="time-select" className="float-left block font-medium text-base text-gray-700 mr-4" >{area}</label>
+        <br />
+    </div>;
     return (
-        <div className="mt-4">
-            <label htmlFor="time-select" className="float-left block font-medium text-base text-gray-700 mr-4" >区分</label>
-            <select onChange={e => setArea(e.target.value)} value={area} name="minutes" id="minutes-select" className="w-20 mr-2 rounded-md shadow-sm border border-gray-400 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                {['国内', '海外'].map((m, i) => {
-                    return <option key={i} value={m}>{m}</option>
-                })}
-            </select>
-        </div>
+        [contents]
     )
 }

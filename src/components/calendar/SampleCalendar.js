@@ -2,17 +2,17 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import allLocales from '@fullcalendar/core/locales-all';
 import interactionPlugin from "@fullcalendar/interaction";
-import { useCallback, useContext, useRef } from "react";
+import { useCallback, useContext } from "react";
 import CreateForm from "./CreateForm";
 import { EventContext } from "./EventProvider";
 // import TestButton from "./TestButton";
 // import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import MonthPicker from "./MonthPicker";
+import AreaSelector from "./AreaSelector";
 
 
 export default function SampleCalendar() {
-    const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, events, setArea, year, month } = useContext(EventContext);
+    const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, events, setArea, filteredEvents} = useContext(EventContext);
 
     const handleEvents = useCallback((ev) => {
         console.log("eventsSet:", ev);  // 確認用
@@ -31,10 +31,10 @@ export default function SampleCalendar() {
         setMinutes('00');
         setId('');
         setTitle('');
-        setArea('国内');
+        // setArea('国内');
         setModalOpen(true);
         // console.log('dateClick:', arg.dateStr);
-    }, [setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, setArea]);
+    }, [setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes]);
 
     // 登録済みイベントクリック
     const handleEventClick = useCallback((arg) => {
@@ -46,6 +46,7 @@ export default function SampleCalendar() {
         })
         setTitle(ev ? ev.title : '');
 
+        //別ページに遷移
         // window.location.replace(`http://localhost:8080/${arg.event.id}`);
         // window.open(`http://localhost:8080/${arg.event.id}`);
 
@@ -55,15 +56,16 @@ export default function SampleCalendar() {
         setHours(('0' + date.getHours()).slice(-2));
         setMinutes(('0' + date.getMinutes()).slice(-2));
         setId(arg.event.id);
-        setArea(ev.area);
+        // setArea(ev.area);
         setModalOpen(true);
-    }, [events, setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, setArea]);
+    }, [events, setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes]);
 
     return (
 
         <div className="container mx-auto my-12">
             {/* <TestButton /> */}
             {/* <MonthPicker /> */}
+            <AreaSelector />
             <CreateForm />
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
@@ -77,7 +79,7 @@ export default function SampleCalendar() {
                 dateClick={handleDateClick} //日付クリック：当日のみ
                 select={handleDateSelect}   //日付選択：複数日でもOK
                 eventClick={handleEventClick}   // 登録済みイベントクリック
-                events={events}
+                events={filteredEvents}
                 headerToolbar={{
                     'left': 'prevYear,prev,next,nextYear today',
                     'center': 'title',
