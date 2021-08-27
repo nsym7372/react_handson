@@ -118,7 +118,7 @@ const DateInput = () => {
 }
 
 const AreaDisplay = () => {
-    const { area, id } = useContext(EventContext);
+    const { area } = useContext(EventContext);
     const contents = <div className="mt-4">
         <label htmlFor="time-select" className="float-left block font-medium text-base text-gray-700 mr-4" >区分</label>
         <label htmlFor="time-select" className="float-left block font-medium text-base text-gray-700 mr-4" >{area}</label>

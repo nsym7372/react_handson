@@ -2,12 +2,10 @@ import { EventContext } from "./EventProvider";
 import { useContext } from "react";
 
 export default function AreaSelector() {
-    const { area, setArea, events, setFilteredEvents } = useContext(EventContext);
+    const { area, setArea } = useContext(EventContext);
 
     const change = (e) => {
         setArea(e.target.value)
-        setFilteredEvents(events.filter((ev, i) => { return ev.area === e.target.value }));
- 
     }
 
     return (

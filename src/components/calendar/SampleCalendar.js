@@ -12,7 +12,7 @@ import AreaSelector from "./AreaSelector";
 
 
 export default function SampleCalendar() {
-    const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, events, setArea, filteredEvents} = useContext(EventContext);
+    const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, events, area} = useContext(EventContext);
 
     const handleEvents = useCallback((ev) => {
         console.log("eventsSet:", ev);  // 確認用
@@ -31,7 +31,6 @@ export default function SampleCalendar() {
         setMinutes('00');
         setId('');
         setTitle('');
-        // setArea('国内');
         setModalOpen(true);
         // console.log('dateClick:', arg.dateStr);
     }, [setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes]);
@@ -56,7 +55,6 @@ export default function SampleCalendar() {
         setHours(('0' + date.getHours()).slice(-2));
         setMinutes(('0' + date.getMinutes()).slice(-2));
         setId(arg.event.id);
-        // setArea(ev.area);
         setModalOpen(true);
     }, [events, setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes]);
 
@@ -79,7 +77,7 @@ export default function SampleCalendar() {
                 dateClick={handleDateClick} //日付クリック：当日のみ
                 select={handleDateSelect}   //日付選択：複数日でもOK
                 eventClick={handleEventClick}   // 登録済みイベントクリック
-                events={filteredEvents}
+                events={events.filter((ev, i) => ev.area === area)}
                 headerToolbar={{
                     'left': 'prevYear,prev,next,nextYear today',
                     'center': 'title',
