@@ -11,7 +11,7 @@ export default function MonthPicker({calendarRef}) {
         const m = (Number(e.target.value) - 1); //月は0~11迄のインデックス
         const to = new Date(year, m, 1);
         calendarApi.gotoDate(to);
-    }, []);
+    }, [calendarRef, setMonth, year]);
 
     return (
         <>

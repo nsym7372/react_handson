@@ -68,7 +68,7 @@ export default function SampleCalendar() {
 
     return (
 
-        <div className="container mx-auto my-12">
+        <div className="container mx-auto my-8">
             {/* <TestButton /> */}
             <MonthPicker calendarRef={calendarRef} />
             <AreaSelector />
