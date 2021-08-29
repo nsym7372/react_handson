@@ -2,18 +2,19 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import allLocales from '@fullcalendar/core/locales-all';
 import interactionPlugin from "@fullcalendar/interaction";
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useRef } from "react";
 import CreateForm from "./CreateForm";
 import { EventContext } from "./EventProvider";
 // import TestButton from "./TestButton";
 // import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import AreaSelector from "./AreaSelector";
+import MonthPicker from "./MonthPicker";
 
 
 export default function SampleCalendar() {
     const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, events, area} = useContext(EventContext);
-
+    const calendarRef = useRef('');
     const handleEvents = useCallback((ev) => {
         console.log("eventsSet:", ev);  // 確認用
         // setCurrentEvents(events);
@@ -26,6 +27,7 @@ export default function SampleCalendar() {
 
     // 日付クリック：当日のみ
     const handleDateClick = useCallback((arg) => {
+        const c = calendarRef.current.getApi()
         setTargetDay(arg.dateStr);
         setHours('08');
         setMinutes('00');
@@ -62,10 +64,11 @@ export default function SampleCalendar() {
 
         <div className="container mx-auto my-12">
             {/* <TestButton /> */}
-            {/* <MonthPicker /> */}
+            <MonthPicker calendarRef={calendarRef} />
             <AreaSelector />
             <CreateForm />
             <FullCalendar
+                ref={calendarRef}
                 plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
                 initialView="dayGridMonth"
                 locales={allLocales}
