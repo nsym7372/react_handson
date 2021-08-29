@@ -2,7 +2,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import allLocales from '@fullcalendar/core/locales-all';
 import interactionPlugin from "@fullcalendar/interaction";
-import { useCallback, useContext, useRef } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import CreateForm from "./CreateForm";
 import { EventContext } from "./EventProvider";
 // import TestButton from "./TestButton";
@@ -13,12 +13,18 @@ import MonthPicker from "./MonthPicker";
 
 
 export default function SampleCalendar() {
+    const [isAll, setIsAll] = useState(false);
     const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, events, area} = useContext(EventContext);
     const calendarRef = useRef(null);
     const handleEvents = useCallback((ev) => {
         console.log("eventsSet:", ev);  // 確認用
         // setCurrentEvents(events);
     }, []);
+
+    const handelViewDidMount = useCallback((e) => {
+        setIsAll(!isAll);
+        console.log(e)
+    });
 
     // 日付選択：複数日でもOK
     const handleDateSelect = useCallback((selectInfo) => {
@@ -80,7 +86,7 @@ export default function SampleCalendar() {
                 dateClick={handleDateClick} //日付クリック：当日のみ
                 select={handleDateSelect}   //日付選択：複数日でもOK
                 eventClick={handleEventClick}   // 登録済みイベントクリック
-                events={events.filter((ev, i) => ev.area === area)}
+                events={isAll ? events.filter((ev, i) => ev.area === area) : events.filter((ev, i) => ev.area === area && ev.title.startsWith('os')) }
                 headerToolbar={{
                     'left': 'prevYear,prev,next,nextYear today',
                     'center': 'title',
@@ -88,7 +94,8 @@ export default function SampleCalendar() {
                 }}
                 // aspectRatio={1.15}
                 contentHeight="auto"
-                weekends={true}                
+                weekends={true}
+                viewDidMount={handelViewDidMount}                
 
                 // timeFormat={'H(:mm)'}
                 // // 列の書式
