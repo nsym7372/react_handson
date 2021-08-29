@@ -14,7 +14,7 @@ import MonthPicker from "./MonthPicker";
 
 export default function SampleCalendar() {
     const { setTitle, setModalOpen, setId, setTargetDay, setHours, setMinutes, events, area} = useContext(EventContext);
-    const calendarRef = useRef('');
+    const calendarRef = useRef(null);
     const handleEvents = useCallback((ev) => {
         console.log("eventsSet:", ev);  // 確認用
         // setCurrentEvents(events);
